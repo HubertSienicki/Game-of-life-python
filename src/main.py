@@ -69,7 +69,7 @@ class GameOfLife:
         self.board[row][col] = 1
         self.canvas.itemconfig(self.rectangles[row][col], fill="black")
 
-    def toggle_pause(self, event):
+    def toggle_pause(self):
         self.is_paused = not self.is_paused
 
     def show_options(self):
