@@ -1,5 +1,4 @@
 import tkinter as tk
-import tkinter.simpledialog as sd
 import copy
 
 from options_validation import show_options
