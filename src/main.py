@@ -3,39 +3,9 @@ import tkinter.simpledialog as sd
 import tkinter.messagebox as mb
 import copy
 
+from options_validation import show_options
+
 config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
-
-
-config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
-
-
-def validate_neighbors(value):
-    try:
-        value = int(value)
-        if value < 1 or value > 8:
-            mb.showerror(
-                "Invalid input",
-                "Neighbors for multiplication should be between 1 and 8",
-            )
-            return None
-        return value
-    except ValueError:
-        mb.showerror(
-            "Invalid input", "Neighbors for multiplication should be an integer"
-        )
-        return None
-
-
-def show_options(parent):
-    neighbors = sd.askinteger(
-        "Options", "Enter the number of neighbors for multiplication", parent=parent
-    )
-    neighbors = validate_neighbors(neighbors)
-    if neighbors is not None:
-        config["neighbors"] = neighbors
-    size = sd.askstring(
-        "Options", "Enter the size of the window (format 'axb')", parent=parent
-    )
 
 
 class GameOfLife:
@@ -105,7 +75,7 @@ class GameOfLife:
 
     def show_options(self):
         self.is_paused = True
-        show_options(self.master)
+        show_options(self.master, config)
         start_game()  # start a new game with updated options
 
     def update(self):
@@ -148,23 +118,6 @@ def start_game():
     root.mainloop()
 
 
-def show_options(parent):
-    x = parent.winfo_x()
-    y = parent.winfo_y()
-    neighbors = sd.askinteger(
-        "Options", "Enter the number of neighbors for multiplication", parent=parent
-    )
-    if neighbors is not None:
-        config["neighbors"] = neighbors
-    size = sd.askstring(
-        "Options", "Enter the size of the window (format 'axb')", parent=parent
-    )
-    if size and "x" in size:
-        rows, cols = map(int, size.split("x"))
-        config["rows"] = rows
-        config["cols"] = cols
-
-
 def start_menu():
     menu = tk.Tk()
     menu.title("Game of Life")
@@ -184,7 +137,7 @@ def start_menu():
     options_button = tk.Button(
         frame,
         text="Options",
-        command=lambda: [show_options(menu)],
+        command=lambda: [show_options(menu, config)],
         width=20,
         height=2,
         font=("Arial", 25),
