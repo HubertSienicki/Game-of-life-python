@@ -43,7 +43,7 @@ class GameOfLife:
         )
         self.instruction_label.pack()
 
-        master.bind("<space>", self.toggle_pause)
+        master.bind("<space>", lambda event: self.toggle_pause())
 
     def create_board(self):
         return [[0] * self.cols for _ in range(self.rows)]
