@@ -1,8 +1,41 @@
 import tkinter as tk
 import tkinter.simpledialog as sd
+import tkinter.messagebox as mb
 import copy
 
 config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
+
+
+config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
+
+
+def validate_neighbors(value):
+    try:
+        value = int(value)
+        if value < 1 or value > 8:
+            mb.showerror(
+                "Invalid input",
+                "Neighbors for multiplication should be between 1 and 8",
+            )
+            return None
+        return value
+    except ValueError:
+        mb.showerror(
+            "Invalid input", "Neighbors for multiplication should be an integer"
+        )
+        return None
+
+
+def show_options(parent):
+    neighbors = sd.askinteger(
+        "Options", "Enter the number of neighbors for multiplication", parent=parent
+    )
+    neighbors = validate_neighbors(neighbors)
+    if neighbors is not None:
+        config["neighbors"] = neighbors
+    size = sd.askstring(
+        "Options", "Enter the size of the window (format 'axb')", parent=parent
+    )
 
 
 class GameOfLife:
@@ -73,7 +106,6 @@ class GameOfLife:
     def show_options(self):
         self.is_paused = True
         show_options(self.master)
-        self.master.destroy()  # close the current window
         start_game()  # start a new game with updated options
 
     def update(self):
@@ -141,7 +173,7 @@ def start_menu():
     start_button = tk.Button(
         frame,
         text="Start",
-        command=lambda: [start_game(), menu.destroy()],
+        command=lambda: [start_game()],
         width=20,
         height=2,
         font=("Arial", 25),
@@ -152,7 +184,7 @@ def start_menu():
     options_button = tk.Button(
         frame,
         text="Options",
-        command=lambda: [show_options(menu), menu.destroy()],
+        command=lambda: [show_options(menu)],
         width=20,
         height=2,
         font=("Arial", 25),
