@@ -2,6 +2,8 @@ import tkinter as tk
 import tkinter.simpledialog as sd
 import copy
 
+from options_validation import show_options
+
 config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
 
 game_window = None  # Global variable to track the game window
@@ -118,26 +120,11 @@ def start_game():
     game_window = GameOfLife(root)
     root.after(1000, game_window.update)
     set_window_center(
-        root, game_window.cols * game_window.size, game_window.rows * game_window.size + 90
+        root,
+        game_window.cols * game_window.size,
+        game_window.rows * game_window.size + 90,
     )  # Increase window height to account for Options button and instruction label
     root.mainloop()
-
-
-def show_options(parent):
-    x = parent.winfo_x()
-    y = parent.winfo_y()
-    neighbors = sd.askinteger(
-        "Options", "Enter the number of neighbors for multiplication", parent=parent
-    )
-    if neighbors is not None:
-        config["neighbors"] = neighbors
-    size = sd.askstring(
-        "Options", "Enter the size of the window (format 'axb')", parent=parent
-    )
-    if size and "x" in size:
-        rows, cols = map(int, size.split("x"))
-        config["rows"] = rows
-        config["cols"] = cols
 
 
 def start_menu():
@@ -159,7 +146,7 @@ def start_menu():
     options_button = tk.Button(
         frame,
         text="Options",
-        command=lambda: [show_options(menu)],
+        command=lambda: [show_options(menu, config)],
         width=20,
         height=2,
         font=("Arial", 25),
