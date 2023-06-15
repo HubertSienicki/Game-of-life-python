@@ -76,7 +76,7 @@ class GameOfLife:
 
     def show_options(self):
         self.is_paused = True
-        show_options(self.master)
+        show_options(self.master, config)
         if game_window:
             game_window.restart_game()
 
