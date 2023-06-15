@@ -137,7 +137,7 @@ def start_menu():
     options_button = tk.Button(
         frame,
         text="Options",
-        command=lambda: [show_options],
+        command=lambda: [show_options(menu, config)],
         width=20,
         height=2,
         font=("Arial", 25),

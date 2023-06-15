@@ -50,16 +50,17 @@ def show_options(parent, config):
     neighbors = validate_neighbors(neighbors)
     if neighbors is not None:
         config["neighbors"] = neighbors
-    else:
-        show_options(parent, config)
 
-    size = sd.askstring(
-        "Options", "Enter the size of the window (format 'axb')", parent=parent
-    )
-    size = validate_size(size)
-    if size is not None:
-        rows, cols = size
-        config["rows"] = rows
-        config["cols"] = cols
+        size = sd.askstring(
+            "Options", "Enter the size of the window (format 'axb')", parent=parent
+        )
+        size = validate_size(size)
+
+        if size is not None:
+            rows, cols = size
+            config["rows"] = rows
+            config["cols"] = cols
+        else:
+            show_options(parent, config)
     else:
         show_options(parent, config)
