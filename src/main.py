@@ -4,6 +4,8 @@ import copy
 
 config = {"neighbors": 3, "rows": 20, "cols": 20, "size": 20}
 
+game_window = None  # Global variable to track the game window
+
 
 class GameOfLife:
     def __init__(self, master):
@@ -73,8 +75,8 @@ class GameOfLife:
     def show_options(self):
         self.is_paused = True
         show_options(self.master)
-        self.master.destroy()  # close the current window
-        start_game()  # start a new game with updated options
+        if game_window:
+            game_window.restart_game()
 
     def update(self):
         if not self.is_paused:
@@ -105,13 +107,18 @@ class GameOfLife:
         count -= self.board[row][col]
         return count
 
+    def restart_game(self):
+        self.master.destroy()
+        start_game()
+
 
 def start_game():
+    global game_window  # Use the global variable
     root = tk.Tk()
-    game = GameOfLife(root)
-    root.after(1000, game.update)
+    game_window = GameOfLife(root)
+    root.after(1000, game_window.update)
     set_window_center(
-        root, game.cols * game.size, game.rows * game.size + 90
+        root, game_window.cols * game_window.size, game_window.rows * game_window.size + 90
     )  # Increase window height to account for Options button and instruction label
     root.mainloop()
 
@@ -152,7 +159,7 @@ def start_menu():
     options_button = tk.Button(
         frame,
         text="Options",
-        command=lambda: [show_options(menu), menu.destroy()],
+        command=lambda: [show_options(menu)],
         width=20,
         height=2,
         font=("Arial", 25),
